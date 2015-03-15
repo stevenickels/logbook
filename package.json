@@ -1,0 +1,23 @@
+{
+  "name": "AngularLogbook",
+  "version": "0.0.0",
+  "description": "Pilot logbook web application in AngularJS and Firebase",
+  "main": "index.html",
+  "dependencies": {},
+  "devDependencies": {
+    "grunt": "~0.4.5",
+    "grunt-contrib-jshint": "~0.11.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/stevenickels/logbook"
+  },
+  "author": "Steve Nickels",
+  "license": "GNU GPL v2",
+  "bugs": {
+    "url": "https://github.com/stevenickels/logbook/issues"
+  }
+}
