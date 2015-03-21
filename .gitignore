@@ -1,0 +1,6 @@
+.tmp
+dist
+bower_components
+node_modules
+sshconfig.json
+app/scripts/templates.js
