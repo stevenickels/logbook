@@ -277,6 +277,14 @@ module.exports = function (grunt) {
     //   dist: {}
     // },
 
+    uglify: {
+      dev: {
+        files: {
+          '<%= yeoman.dist %>/scripts/vendor.js': ['<%= yeoman.dist %>/scripts/vendor.js']
+        }
+      }
+    },
+
     imagemin: {
       dist: {
         files: [{
@@ -408,6 +416,32 @@ module.exports = function (grunt) {
         configFile: 'test/karma.conf.js',
         singleRun: true
       }
+    },
+
+    // Deployment settings
+    sshconfig: {
+      'deployhost': grunt.file.readJSON('sshconfig.json')
+    },
+    sshexec: {
+      clean: {
+        command: 'cd "<%= sshconfig.deployhost.path %>" && ./clean.sh',
+        options: {
+          config: 'deployhost',
+          agent: process.env.SSH_AUTH_SOCK
+        }
+      }
+    },
+    sftp: {
+      deploy: {
+        files: { './': '<%= yeoman.dist %>/{,*/}*' },
+        options: {
+          config: 'deployhost',
+          agent: process.env.SSH_AUTH_SOCK,
+          showProgress: true,
+          srcBasePath: '<%= yeoman.dist %>/',
+          createDirectories: true
+        }
+      }
     }
   });
 
@@ -441,6 +475,11 @@ module.exports = function (grunt) {
     'karma'
   ]);
 
+  grunt.registerTask('deploy', [
+    'sshexec:clean',
+    'sftp:deploy'
+  ]);
+
   grunt.registerTask('build', [
     'clean:dist',
     'wiredep',
@@ -466,11 +505,12 @@ module.exports = function (grunt) {
     'less',
     'useminPrepare',
     'concat',
-    'ngAnnotate',
     'copy:dist',
     'cssmin',
+    'uglify:dev',
     'filerev',
-    'usemin'
+    'usemin',
+    'deploy'
   ]);
 
   grunt.registerTask('default', [
